@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Registro de Asistencia - Mini So Multi Plaza</title>
+  <link rel="stylesheet" href="styles/gestionAsistencia.css">
+  <link rel="stylesheet" href="styles/modal.css">
+  <!-- Asegúrate de incluir Font Awesome para las estrellas -->
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+</head>
+<body>
+  <div class="phone-frame">
+    <!-- Título de la aplicación -->
+    <h1 class="title">Mini So - Multi Plaza</h1>
+
+    <!-- Sección de tarjetas de empleados -->
+    <section>
+      <h2>Registro de Asistencia</h2>
+      <div class="card-container">
+        <!-- Tarjeta de empleado -->
+        <div class="card">
+          <img src="avatar1.jpg" alt="Empleado 1" class="avatar">
+          <div class="info">
+            <p><strong>ID:</strong> EMP001</p>
+            <div class="stars">
+              <!-- Estrellas de puntualidad -->
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="far fa-star"></i>
+            </div>
+            <p><strong>Nombre:</strong> Juan Pérez</p>
+          </div>
+          <!-- Overlay con botones -->
+          <div class="overlay">
+            <button onclick="registrarEntrada('EMP001')">Entrada</button>
+            <button onclick="registrarSalida('EMP001')">Salida</button>
+          </div>
+        </div>
+
+        <!-- Repite las tarjetas para los demás empleados -->
+        <!-- Empleado 2 -->
+        <div class="card">
+          <img src="avatar2.jpg" alt="Empleado 2" class="avatar">
+          <div class="info">
+            <p><strong>ID:</strong> EMP002</p>
+            <div class="stars">
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="far fa-star"></i>
+              <i class="far fa-star"></i>
+            </div>
+            <p><strong>Nombre:</strong> María López</p>
+          </div>
+          <div class="overlay">
+            <button onclick="registrarEntrada('EMP002')">Entrada</button>
+            <button onclick="registrarSalida('EMP002')">Salida</button>
+          </div>
+        </div>
+
+        <!-- Empleado 3 -->
+        <div class="card">
+          <img src="avatar3.jpg" alt="Empleado 3" class="avatar">
+          <div class="info">
+            <p><strong>ID:</strong> EMP003</p>
+            <div class="stars">
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="far fa-star"></i>
+              <i class="far fa-star"></i>
+              <i class="far fa-star"></i>
+            </div>
+            <p><strong>Nombre:</strong> Carlos García</p>
+          </div>
+          <div class="overlay">
+            <button onclick="registrarEntrada('EMP003')">Entrada</button>
+            <button onclick="registrarSalida('EMP003')">Salida</button>
+          </div>
+        </div>
+
+        <!-- Empleado 4 -->
+        <div class="card">
+          <img src="img/avatars/avatar4.webp" alt="Empleado 4" class="avatar">
+          <div class="info">
+            <p><strong>ID:</strong> EMP004</p>
+            <div class="stars">
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+            </div>
+            <p><strong>Nombre:</strong> Alexander Reina </p>
+          </div>
+          <div class="overlay">
+            <button onclick="registrarEntrada('EMP004')">Entrada</button>
+            <button onclick="registrarSalida('EMP004')">Salida</button>
+          </div>
+        </div>
+
+        <!-- Empleado 5 -->
+        <div class="card">
+          <img src="avatar5.jpg" alt="Empleado 5" class="avatar">
+          <div class="info">
+            <p><strong>ID:</strong> EMP005</p>
+            <div class="stars">
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="far fa-star"></i>
+            </div>
+            <p><strong>Nombre:</strong> Ana Torres</p>
+          </div>
+          <div class="overlay">
+            <button onclick="registrarEntrada('EMP005')">Entrada</button>
+            <button onclick="registrarSalida('EMP005')">Salida</button>
+          </div>
+        </div>
+
+        <!-- Empleado 6 -->
+        <div class="card">
+          <img src="avatar6.jpg" alt="Empleado 6" class="avatar">
+          <div class="info">
+            <p><strong>ID:</strong> EMP006</p>
+            <div class="stars">
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="far fa-star"></i>
+              <i class="far fa-star"></i>
+              <i class="far fa-star"></i>
+            </div>
+            <p><strong>Nombre:</strong> Pedro Sánchez</p>
+          </div>
+          <div class="overlay">
+            <button onclick="registrarEntrada('EMP006')">Entrada</button>
+            <button onclick="registrarSalida('EMP006')">Salida</button>
+          </div>
+        </div>
+
+        <!-- Empleado 7 -->
+        <div class="card">
+          <img src="avatar7.jpg" alt="Empleado 7" class="avatar">
+          <div class="info">
+            <p><strong>ID:</strong> EMP007</p>
+            <div class="stars">
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="far fa-star"></i>
+              <i class="far fa-star"></i>
+            </div>
+            <p><strong>Nombre:</strong> Sofía Díaz</p>
+          </div>
+          <div class="overlay">
+            <button onclick="registrarEntrada('EMP007')">Entrada</button>
+            <button onclick="registrarSalida('EMP007')">Salida</button>
+          </div>
+        </div>
+
+      </div>
+    </section>
+  </div>
+
+    <!-- Modal -->
+    <div id="registro-modal" class="modal">
+        <div class="modal-content">
+        <span class="close-btn" onclick="cerrarModal()">&times;</span>
+        <h2 id="modal-titulo"></h2>
+        <p id="modal-mensaje"></p>
+        </div>
+    </div>
+  
+  <!-- Scripts -->
+  <script src="main.js"></script>
+</body>
+</html>
