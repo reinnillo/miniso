@@ -1,15 +1,18 @@
 // Función para mostrar el modal
-function mostrarModal(exito, accion, empID) {
+function mostrarModal(exito, accion, name) {
     const modal = document.getElementById('registro-modal');
     const titulo = document.getElementById('modal-titulo');
     const mensaje = document.getElementById('modal-mensaje');
 
-    if (exito) {
+    if (exito === 'exito') {
         titulo.textContent = '¡Registro Exitoso!';
-        mensaje.textContent = 'Se ha registrado la ' + accion + ' para el empleado ' + empID + '.';
-    } else {
+        mensaje.textContent = 'Se ha registrado la ' + accion + ' para ' + name + '.';
+    } else if(exito === 'error') {
         titulo.textContent = 'Error en el Registro';
-        mensaje.textContent = 'Hubo un problema al registrar la ' + accion + ' para el empleado ' + empID + '.';
+        mensaje.textContent = 'Hubo un problema al registrar la ' + accion + ' para ' + name + '.';
+    } else if( exito === 'sin registro') {
+        titulo.textContent = 'Mensaje'
+        mensaje.textContent = 'Sin hora de entrada o tu salida ya fue registrada.';
     }
 
     modal.style.display = 'block';
@@ -17,33 +20,42 @@ function mostrarModal(exito, accion, empID) {
 
 // Función para cerrar el modal
 const closebtn = document.querySelector('.close-btn');
-closebtn.addEventListener('click', ()=> {
+closebtn.addEventListener('click', () => {
     const modal = document.getElementById('registro-modal');
     modal.style.display = 'none';
 
 });
 
 // Funciones para manejar el registro de entrada y salida
-function registrarEntrada(empID) {
+function registrarEntrada(ID, empID, callback1, callback2, name) {
     // Simular una operación exitosa o fallida
-    const exito = true; // Cambia esto según la lógica real
+    const EMPLEADO_ID = empID;
+    const HENTRADA = callback1;
+    const EMPLEADOS = ID;
+    const FECHA = callback2;
 
     // Lógica para registrar la entrada (a implementar)
     // ...
+    const fields = {
+        EmpleadoID: EMPLEADO_ID,
+        Empleados: [
+            EMPLEADOS
+        ],
+        HEntrada: HENTRADA,
+        Fecha: FECHA
+    };
 
-    // Mostrar el modal con el resultado
-    mostrarModal(exito, 'entrada', empID);
+    enviarRegistroAirtable(fields, name);
 }
 
-function registrarSalida(empID) {
+function registrarSalida(empID, callback, name) {
     // Simular una operación exitosa o fallida
-    const exito = true; // Cambia esto según la lógica real
+    const EMPLEADO_ID = empID;
+    const SALIDA = callback;
 
     // Lógica para registrar la salida (a implementar)
     // ...
-
-    // Mostrar el modal con el resultado
-    mostrarModal(exito, 'salida', empID);
+    actualizarRegistroAirtable(SALIDA, EMPLEADO_ID, name);
 }
 
 // Cerrar el modal al hacer clic fuera de él
@@ -54,11 +66,16 @@ window.onclick = function (event) {
     }
 }
 
+//
+// AIRTABLE
 const API_KEY = 'patDXbGfix8oKiLUn.3ccc66b77558468a6346d427bb622df70f13765afe244566d084311f0fe7efaf'; // Clave API
-const BASE_ID = 'appaAwsZ5FQOfJjwl'; // ID de la base de datos
-const TABLE_NAME = 'tblLdYVKTLZhE4h36'; // Nombre de la tabla en Airtable
+const BASE_ID = 'appaAwsZ5FQOfJjwl'; // ID de la base de datos Empleados
+//
+
+// CODIGO PARA OBTENER DATOS DE EMPLEADOS
+const EMPLEADO_TABLE = 'tblLdYVKTLZhE4h36'; // Nombre de la tabla en Airtable
 // URL para obtener los nombres de los empleados de Airtable
-const getUrl = `https://api.airtable.com/v0/${BASE_ID}/${TABLE_NAME}`;
+const getUrl = `https://api.airtable.com/v0/${BASE_ID}/${EMPLEADO_TABLE}`;
 
 let message;
 let success;
@@ -68,7 +85,7 @@ const estrellaSVG = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="
 // Función para crear la tarjeta de empleado
 function crearCardEmpleado(empleado) {
     // Extraer las propiedades del objeto empleado
-    const { EmpleadoID, Nombre, Avatar, Estrellas, Rol } = empleado;
+    const { recordID, EmpleadoID, Nombre, Avatar, Estrellas, Rol } = empleado;
 
     // Crear el elemento principal de la tarjeta
     const card = document.createElement('div');
@@ -120,12 +137,12 @@ function crearCardEmpleado(empleado) {
 
     const btnEntrada = document.createElement('button');
     btnEntrada.textContent = 'Entrada';
-    btnEntrada.onclick = () => registrarEntrada(EmpleadoID);
+    btnEntrada.onclick = () => registrarEntrada(recordID, EmpleadoID, getHour(), obtenerFechaActual(), Nombre);
     overlayDiv.appendChild(btnEntrada);
 
     const btnSalida = document.createElement('button');
     btnSalida.textContent = 'Salida';
-    btnSalida.onclick = () => registrarSalida(EmpleadoID);
+    btnSalida.onclick = () => registrarSalida(EmpleadoID, getHour(), Nombre);
     overlayDiv.appendChild(btnSalida);
 
     card.appendChild(overlayDiv);
@@ -152,7 +169,7 @@ async function fetchAPI(options = {}) {
         const res = await fetch(getUrl, fetchOptions);
         if (!res.ok) throw new Error(`HTTP error! Status: ${res.status}`);
         const data = await res.json();
-        
+
         const records = data.records || data;
         return records;
     } catch (error) {
@@ -163,17 +180,19 @@ async function fetchAPI(options = {}) {
 
 // Llamada a la función para probarla
 fetchAPI()
-.then(records => {
+    .then(records => {
 
         // Datos de los empleados
         const EMPs = records.map(EMP => {
-            if(EMP.fields){
+            if (EMP.fields) {
+                const recordID = EMP.id; // ID de registro
                 const EmpleadoID = EMP.fields?.EmpleadoID; // ID del empleado
                 const Nombre = EMP.fields?.Nombre; // Nombre del empleado
                 const Avatar = EMP.fields?.Avatar[0]?.url; // Imagen del empleado
                 const Estrellas = EMP.fields?.Estrellas; // calificacion por puntualidad
                 const Rol = EMP.fields?.Rol; // Cargo en la empresa
                 return {
+                    recordID,
                     EmpleadoID,
                     Nombre,
                     Avatar,
@@ -192,8 +211,154 @@ fetchAPI()
             cardContainer.appendChild(card);
         });
 
+
+
     })
     .catch(error => {
         console.error('Error al obtener los datos:', error);
     });
 
+
+
+// lo que tengo que enviar cuando creo un nuevo registro de asistencia
+//    {
+//        "id": "recviwd2Mc0v4bgG0",
+//        "createdTime": "2024-11-27T08:58:26.000Z",
+//        "fields": {
+//            "EmpleadoID": "EMP004",
+//            "HSalida": "10:00 PM",
+//            "Turno": "cierre",
+//            "Empleados": [
+//                "recAyQ0IuEaXYYDxv"
+//            ],
+//            "HEntrada": "1:30 PM",
+//            "Nota": "Trabajó horas extra.",
+//            "Fecha": "2024-11-18",
+//            "HExtras": 1,
+//            "Nombre (from Empleados)": [
+//                "Alexander Reina"
+//            ]
+//        }
+//    }
+
+function getHour() {
+
+    const date = new Date();
+    let hour = date.getHours();
+    const minute = date.getMinutes();
+
+    // Determinar si es AM o PM
+    const ampm = hour >= 12 ? 'PM' : 'AM';
+
+    // Convertir la hora al formato de 12 horas
+    hour = hour % 12;
+    hour = hour ? hour : 12; // La hora '0' debe ser '12'
+
+    return `${hour}:${minute < 10 ? '0' : ''}${minute} ${ampm}`;
+};
+
+
+function obtenerFechaActual() {
+    const fecha = new Date();
+    const año = fecha.getFullYear();
+    let mes = fecha.getMonth() + 1; // Los meses van de 0 (enero) a 11 (diciembre)
+    let dia = fecha.getDate();
+
+    // Asegurar que el mes y el día tengan dos dígitos
+    if (mes < 10) mes = '0' + mes;
+    if (dia < 10) dia = '0' + dia;
+
+    return `${año}-${mes}-${dia}`;
+};
+
+function enviarRegistroAirtable(datos, name) {
+    const TABLE_ASIS = 'tblXwl47C13NxbdUi'; // tabla de asistencia
+    const URL = `https://api.airtable.com/v0/${BASE_ID}/${encodeURIComponent(TABLE_ASIS)}`;
+
+    fetch(URL, {
+        method: 'POST',
+        headers: {
+            'Authorization': `Bearer ${API_KEY}`,
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            records: [
+                {
+                    fields: datos
+                }
+            ]
+        })
+    })
+        .then(response => {
+            if (!response.ok) {
+                return response.json().then(errorInfo => Promise.reject(errorInfo));
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log('Registro enviado exitosamente:', data);
+            mostrarModal('exito', 'entrada', name)
+        })
+        .catch(error => {
+            console.error('Error al enviar el registro:', error);
+            mostrarModal('error', 'entrada', name)
+        });
+}
+
+async function actualizarRegistroAirtable(nuevoDato, EMPLEADO_ID, name) {
+    const TABLE_ASIS = 'tblXwl47C13NxbdUi'; // tabla de asistencia
+    // Construir la fórmula de filtro para buscar por EmpleadoID
+    // Construir la fórmula de filtro para buscar por EmpleadoID y HSalida en blanco
+  const filterFormula = `AND({EmpleadoID}="${EMPLEADO_ID}", {HSalida}=BLANK())`;
+  const encodedFilterFormula = encodeURIComponent(filterFormula);
+
+  // URL para consultar el registro existente con HSalida en blanco
+  const urlConsultar = `https://api.airtable.com/v0/${BASE_ID}/${TABLE_ASIS}?filterByFormula=${encodedFilterFormula}&sort[0][field]=HEntrada&sort[0][direction]=desc&maxRecords=1`;
+
+  try {
+    // Consultar si existe un registro con EMPLEADO_ID y HSalida en blanco
+    const respuestaConsulta = await fetch(urlConsultar, {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${API_KEY}`,
+        'Content-Type': 'application/json'
+      }
+    });
+
+    const datosConsulta = await respuestaConsulta.json();
+
+    if (datosConsulta.records && datosConsulta.records.length > 0) {
+      const registroExistente = datosConsulta.records[0];
+      const recordId = registroExistente.id;
+
+      // Actualizar el registro existente con el nuevo dato
+      const urlActualizar = `https://api.airtable.com/v0/${BASE_ID}/${TABLE_ASIS}/${recordId}`;
+
+      const datosActualizados = {
+        fields: {
+          HSalida: nuevoDato
+        }
+      };
+
+      const respuestaActualizar = await fetch(urlActualizar, {
+        method: 'PATCH',
+        headers: {
+          'Authorization': `Bearer ${API_KEY}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(datosActualizados)
+      });
+
+      const datosActualizacion = await respuestaActualizar.json();
+
+      console.log('Registro actualizado exitosamente:', datosActualizacion);
+    } else {
+      console.log('No se encontró un registro para actualizar.');
+      mostrarModal('sin registro', 'salida', name);
+      // No se realiza ninguna acción adicional.
+    }
+  } catch (error) {
+    console.error('Error al interactuar con Airtable:', error);
+    mostrarModal('error', 'salida', name)
+  }
+}

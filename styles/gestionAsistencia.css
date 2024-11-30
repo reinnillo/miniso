@@ -13,7 +13,7 @@ body {
   /* Contenedor estilo celular */
   .phone-frame {
     width: 100%;
-    max-width: 600px; /* Aumentamos el ancho máximo para pantallas grandes */
+    max-width: 900px; /* Aumentamos el ancho máximo para pantallas grandes */
     height: 90vh;
     border: 16px solid #4a4848;
     border-radius: 36px;
@@ -159,7 +159,7 @@ body {
   /* Estilo para el contenedor de las cards */
   .card-container {
     display: grid;
-    grid-template-columns: repeat(2, 1fr); /* Dos columnas por defecto */
+    grid-template-columns: repeat(3, 1fr); /* tres columnas por defecto */
     gap: 10px;
     padding: 10px;
   }
