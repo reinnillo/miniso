@@ -1,41 +1,82 @@
 <!DOCTYPE html>
 <html lang="es">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Registro de Asistencia - Mini So Multi Plaza</title>
-  <link rel="stylesheet" href="styles/gestionAsistencia.css">
-  <link rel="stylesheet" href="styles/modal.css">
-  <!-- Asegúrate de incluir Font Awesome para las estrellas -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-D8qZSn/6VQfN+v9G1Gp0Q9uYp5W8EsS3xvjd1K/JNdVgdxoI+/fsJmev2rHqSPtOb8tNvQIKV4ItqCObC7zRfA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
-</head>
-<body>
-  <div class="phone-frame">
-    <!-- Título de la aplicación -->
-    <h1 class="title">Mini So - Multi Plaza</h1>
 
-    <!-- Sección de tarjetas de empleados -->
-    <section>
-      <h2>Registro de Asistencia</h2>
-      <div class="card-container">
-        <!-- Tarjeta de empleado -->
-      </div>
-    </section>
-  </div>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro de Asistencia - Mini So Multi Plaza</title>
+    <link rel="stylesheet" href="styles/gestionAsistencia.css">
+    <link rel="stylesheet" href="styles/modal.css">
+    <link rel="stylesheet" href="styles/justificacion-modal.css">
+    <!-- Asegúrate de incluir Font Awesome para las estrellas -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+        integrity="sha512-D8qZSn/6VQfN+v9G1Gp0Q9uYp5W8EsS3xvjd1K/JNdVgdxoI+/fsJmev2rHqSPtOb8tNvQIKV4ItqCObC7zRfA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+</head>
+
+<body>
+    <!-- Botón para abrir el modal de justificación -->
+    <button id="abrirJustificacionModal">Justificar Tardanza</button>
+
+    <div class="phone-frame">
+        <!-- Título de la aplicación -->
+        <h1 class="title">Mini So - Multi Plaza</h1>
+
+        <!-- Sección de tarjetas de empleados -->
+        <section>
+            <h2>Registro de Asistencia</h2>
+            <div class="card-container">
+                <!-- Tarjeta de empleado -->
+            </div>
+        </section>
+    </div>
 
     <!-- Modal -->
     <div id="registro-modal" class="modal">
         <div class="modal-content">
-        <span class="close-btn">&times;</span>
-        <h2 id="modal-titulo"></h2>
-        <p id="modal-mensaje"></p>
+            <span class="close-btn">&times;</span>
+            <h2 id="modal-titulo"></h2>
+            <p id="modal-mensaje"></p>
         </div>
     </div>
-  
-  <!-- Scripts -->
-  <script type="module" src="js/createCard.js"></script>
-  <script type="module" src="js/staff.js"></script>
-  <script type="module" src="main.js"></script>
+
+
+    <!-- Modal de Justificación de Tardanza -->
+    <div id="justificacion-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" id="cerrarJustificacionModal">&times;</span>
+            <h2>Justificación de Tardanza</h2>
+            <form id="justificacion-form">
+                <label for="empleado-id">ID del Empleado:</label>
+                <select id="empleado-id" name="empleado-id" required>
+                    <!-- Opciones de ID de empleados -->
+                    <option value="">Seleccione un ID</option>
+                    <option value="EMP001">EMP001</option>
+                    <option value="EMP002">EMP002</option>
+                    <option value="EMP003">EMP003</option>
+                    <option value="EMP004">EMP004</option>
+                    <option value="EMP005">EMP005</option>
+                    <option value="EMP006">EMP006</option>
+                    <option value="EMP007">EMP007</option>
+                </select>
+
+                <label for="nota-justificacion">Nota de Justificación:</label>
+                <textarea id="nota-justificacion" name="nota-justificacion" rows="4" required></textarea>
+
+                <div class="modal-buttons">
+                    <button type="button" id="enviarJustificacion">Entrada</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+    <!-- Scripts -->
+    <script type="module" src="js/createCard.js"></script>
+    <script type="module" src="js/staff.js"></script>
+    <script type="module" src="Components/JustificacionModal.js"></script>
+    <script type="module" src="main.js"></script>
 </body>
+
 </html>

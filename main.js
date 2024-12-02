@@ -178,7 +178,7 @@ async function fetchAPI(options = {}) {
     }
 };
 
-// Llamada a la función para probarla
+// Llamada a la función
 fetchAPI()
     .then(records => {
 
@@ -303,7 +303,7 @@ function enviarRegistroAirtable(datos, name) {
             console.error('Error al enviar el registro:', error);
             mostrarModal('error', 'entrada', name)
         });
-}
+};
 
 async function actualizarRegistroAirtable(nuevoDato, EMPLEADO_ID, name) {
     const TABLE_ASIS = 'tblXwl47C13NxbdUi'; // tabla de asistencia
@@ -361,4 +361,4 @@ async function actualizarRegistroAirtable(nuevoDato, EMPLEADO_ID, name) {
     console.error('Error al interactuar con Airtable:', error);
     mostrarModal('error', 'salida', name)
   }
-}
+};
