@@ -1,0 +1,23 @@
+/* Estilos para el botón "Justificar Tardanza" */
+.justificar-btn {
+    display: block;
+    width: 80%;
+    max-width: 300px;
+    margin: 20px auto;
+    padding: 12px;
+    background: linear-gradient(45deg, #ff00ff, #00ffd5);
+    color: white;
+    font-size: 1rem;
+    text-align: center;
+    text-decoration: none;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.3s ease;
+  }
+  
+  .justificar-btn:hover {
+    background: linear-gradient(45deg, #00ffd5, #ff00ff);
+    transform: scale(1.05);
+  }
+  
